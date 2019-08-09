@@ -9,7 +9,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "types": ["reflect-metadata", "node"]
+    "types": ["reflect-metadata", "node", "jest"]
   },
   "exclude": ["node_modules"],
   "include": [

@@ -9,8 +9,6 @@ export class TodoService {
   public createTodo(description: string, completed: boolean) {
     const todoCreated = new TodoCreated(description, completed);
 
-    console.log(this.eventBus, todoCreated);
-
     this.eventBus.publish(todoCreated);
   }
 }

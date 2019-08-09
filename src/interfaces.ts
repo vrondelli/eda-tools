@@ -4,6 +4,7 @@ export interface IEventBus {
   subscribe(event: EventType, handler: IEventHandler): void;
   unsubscribe(event: EventType, handler: IEventHandler): void;
   publish(event: EventType, message?: any): void;
+  subscribeAll(events: EventType[], handlerClassInstance: object): void;
 }
 
 export interface IMessageTransport {
@@ -15,7 +16,7 @@ export interface IMessageTransport {
   /**
    * Unsubscribe a handler of a topic 
    */
-  unsubscribe(topic: string, handler: IEventHandler): void; 
+  unsubscribe(topic: string, handler: IEventHandler): void;
 
   /**
    * Publishes a message to all subscribers

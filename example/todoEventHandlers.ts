@@ -1,4 +1,4 @@
-import { EventHandler } from '../src/decorators';
+import { EventHandler } from '../src/eventHandler';
 import { TodoCreated } from './todoEvents';
 import { Handle } from '../src/handle';
 import { injectable } from 'inversify';

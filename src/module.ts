@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container, interfaces } from 'inversify';
 import { ConcreteType } from '@cashfarm/lang';
-import { IMessageTransport } from './interfaces';
+import { IMessageTransport, IEventBus } from './interfaces';
 import { EVENTS_HANDLER_METADATA } from './constants';
 import { EventBus } from './eventbus';
 import { Transport } from './transport';
@@ -18,7 +18,7 @@ export function getEventHandlers(providers: ConcreteType<any>[]) {
 }
 
 export function registryEventHandlersInEventbus(
-  eventBus: EventBus,
+  eventBus: IEventBus,
   eventHandlers: ConcreteType<any>[],
   container: Container
 ) {

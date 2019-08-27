@@ -55,7 +55,7 @@ export class TodoEventHandlers {
 
 First you have to create a array with the providers, which can be all services that you want to inject in your application with all eventHandlers, next call the function createModule.
 
-The function createModule accepts you custom inversify container or container options and your custom transport as parameters, if not given a basic inversify and a basic message transport are default values.
+The function createModule accepts you custom inversify container or container options and your custom transport as parameters, if not given a basic inversify and a basic message transport which uses node event emitter, are default values.
 
 ```ts
 const providers = [TodoEventHandlers, TodoService];

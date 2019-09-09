@@ -14,4 +14,8 @@ export class Transport extends EventEmitter implements IMessageTransport {
   public publish(topic: string, message: any): void {
     this.emit(topic, message);
   }
+
+  public getHandlers(topic: string): IEventHandler[] {
+    return this.listeners(topic) as IEventHandler[];
+  }
 }

@@ -11,13 +11,13 @@ import { Type } from '@cashfarm/lang';
 export class EventBus implements IEventBus {
   constructor(private transport: IMessageTransport) { }
 
-  public subscribe(event: EventType, handler: IEventHandler) {
+  public subscribe(event: EventType, handler: IEventHandler): void {
     const eventName = this.getEventName(event);
 
     this.transport.subscribe(eventName, handler)
   }
 
-  public subscribeAll(events: EventType[], handlerClassInstance: object) {
+  public subscribeAll(events: EventType[], handlerClassInstance: object): void {
     events.forEach(event => {
       const handler = handlerClassInstance[Handle(event)];
 
@@ -30,16 +30,22 @@ export class EventBus implements IEventBus {
     });
   }
 
-  public unsubscribe(event: EventType, handler: IEventHandler) {
+  public unsubscribe(event: EventType, handler: IEventHandler): void {
     return this.transport.unsubscribe(this.getEventName(event), handler);
   }
 
-  public publish(event: EventType, message?: any) {
+  public publish(event: EventType, message?: any): void {
     if (isEventString(event)) return this.transport.publish(<string>event, message);
 
     const eventName = (<IEvent>event).constructor.name;
 
     this.transport.publish(eventName, event);
+  }
+
+  public getEventHandlers(event: EventType): IEventHandler[] {
+    const eventName = this.getEventName(event);
+
+    return this.transport.getHandlers(eventName);
   }
 
   private getEventName(event: EventType) {

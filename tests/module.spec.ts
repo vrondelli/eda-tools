@@ -45,6 +45,7 @@ describe("registerEventHandlersInEventbus()", () => {
       subscribeAll: jest.fn(),
       unsubscribe: jest.fn(),
       publish: jest.fn(),
+      getEventHandlers: jest.fn()
     }));
 
     const eventbus = new EventBusMock();

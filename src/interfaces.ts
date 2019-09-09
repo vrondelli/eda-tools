@@ -6,6 +6,7 @@ export interface IEventBus {
   unsubscribe(event: EventType, handler: IEventHandler): void;
   publish(event: EventType, message?: any): void;
   subscribeAll(events: EventType[], handlerClassInstance: object): void;
+  getEventHandlers(event: EventType): IEventHandler[];
 }
 
 export interface IMessageTransport {
@@ -23,6 +24,11 @@ export interface IMessageTransport {
    * Publishes a message to all subscribers
    */
   publish(topic: string, message: any): void;
+
+  /**
+   * Get All handlers of a topic
+   */
+  getHandlers(topic: string): IEventHandler[];
 }
 
 export interface IModuleOptions {

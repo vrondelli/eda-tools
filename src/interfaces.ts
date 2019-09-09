@@ -1,4 +1,5 @@
 import { EventType, IEventHandler } from './types';
+import { Container, interfaces } from 'inversify';
 
 export interface IEventBus {
   subscribe(event: EventType, handler: IEventHandler): void;
@@ -22,4 +23,10 @@ export interface IMessageTransport {
    * Publishes a message to all subscribers
    */
   publish(topic: string, message: any): void;
+}
+
+export interface IModuleOptions {
+  transport?: IMessageTransport,
+  container?: Container,
+  containerOptions?: interfaces.ContainerOptions
 }

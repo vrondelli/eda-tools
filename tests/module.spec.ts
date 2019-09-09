@@ -1,21 +1,22 @@
 import { Container } from 'inversify';
 import {
-  registryProviders,
+  registerProviders,
   EventHandler,
   getEventHandlers,
-  EventBus,
   Transport,
-  registryEventHandlersInEventbus
+  registerEventHandlersInEventbus,
+  IEventBus,
+  createModule
 } from '../src';
-import { TestHandler, eventbus } from './fixtures';
+import { TestHandler } from './fixtures';
 
-describe("registryProviders()", () => {
-  test("registry providers in a inversify container", () => {
+describe("registerProviders()", () => {
+  test("register providers in a inversify container", () => {
     const container = new Container();
 
     const providers = [TestHandler];
 
-    registryProviders(providers, container);
+    registerProviders(providers, container);
 
     const instance = container.get<TestHandler>(TestHandler);
 
@@ -37,17 +38,51 @@ describe("getEventHandlers()", () => {
   });
 });
 
-describe("registryEventHandlersInEventbus()", () => {
-  const container = new Container();
+describe("registerEventHandlersInEventbus()", () => {
+  test("register all eventHandlers in eventBus", () => {
+    const EventBusMock = jest.fn<IEventBus, any>(() => ({
+      subscribe: jest.fn(),
+      subscribeAll: jest.fn(),
+      unsubscribe: jest.fn(),
+      publish: jest.fn(),
+    }));
 
+    const eventbus = new EventBusMock();
 
-  const event = "TestEvent";
+    const container = new Container();
 
-  EventHandler(event)(TestHandler);
-  const providers = [TestHandler];
+    const event = "TestEvent";
 
-  registryProviders(providers, container);
+    EventHandler(event)(TestHandler);
+    const providers = [TestHandler];
 
-  const eventHandlers = [TestHandler];
+    registerProviders(providers, container);
 
+    const eventHandlers = [TestHandler];
+
+    const eventHandlerInstance = container.get<TestHandler>(TestHandler);
+
+    registerEventHandlersInEventbus(eventbus, eventHandlers, container);
+
+    expect(eventbus.subscribeAll).toHaveBeenCalledWith([event], eventHandlerInstance);
+  });
+});
+
+describe("createModule()", () => {
+  describe("registers providers in container and subscribes eventHandlers in eventBus", () => {
+    describe("when passing a custom container as parameter", () => {
+      test("returns your custom container with all providers registered", () => {
+        const container = new Container();
+
+        const event = "TestEvent";
+
+        EventHandler(event)(TestHandler);
+        const providers = [TestHandler];
+
+        const module = createModule(providers, undefined, container);
+
+        expect(module.id).toBe(container.id);
+      });
+    });
+  })
 });

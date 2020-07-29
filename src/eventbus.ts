@@ -19,7 +19,7 @@ export class EventBus implements IEventBus {
 
   public subscribeAll(events: EventType[], handlerClassInstance: object): void {
     events.forEach(event => {
-      const handler = handlerClassInstance[Handle(event)];
+      const handler = handlerClassInstance[Handle(event)].bind(handlerClassInstance);
 
       if (typeof handler !== 'function') {
         throw new Error(`Can't subscribe ${handlerClassInstance.constructor.name} to ${this.getEventName(event)}` +
